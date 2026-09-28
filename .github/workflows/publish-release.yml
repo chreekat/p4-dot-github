@@ -25,8 +25,8 @@ on:
         default: ""
         type: string
     secrets:
-      PACKAGES_DISPATCH_TOKEN:
-        description: "Token that can create repository_dispatch events on p4lang/packages"
+      PACKAGES_APP_PRIVATE_KEY:
+        description: "Private key of the GitHub App that dispatches to p4lang/packages"
         required: false
 
 jobs:
@@ -78,9 +78,18 @@ jobs:
     if: inputs.dispatch_package != '' && needs.publish.outputs.released == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: Mint a token for p4lang/packages
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.PACKAGES_APP_ID }}
+          private-key: ${{ secrets.PACKAGES_APP_PRIVATE_KEY }}
+          owner: p4lang
+          repositories: packages
+
       - name: Dispatch to p4lang/packages
         env:
-          GH_TOKEN: ${{ secrets.PACKAGES_DISPATCH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           PACKAGE: ${{ inputs.dispatch_package }}
           TAG: ${{ needs.publish.outputs.tag }}
         run: |

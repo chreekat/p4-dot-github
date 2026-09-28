@@ -133,7 +133,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo -e "Maintainers: Mark this PR as *ready* to trigger CI.\n\nPlease use **Squash and merge** to include the changelog in the release message." | \
+          echo -e "Maintainers: [Approve the workflow](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow) to run CI.\n\nPlease use **Squash and merge** to include the changelog in the release message." | \
           gh pr comment "${{ steps.create_pr.outputs.pull-request-number }}" \
             --repo "${{ github.repository }}" \
             --body-file -
