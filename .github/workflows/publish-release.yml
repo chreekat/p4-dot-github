@@ -25,7 +25,7 @@ on:
         default: ""
         type: string
     secrets:
-      PACKAGES_APP_PRIVATE_KEY:
+      RELEASE_APP_PRIVATE_KEY:
         description: "Private key of the GitHub App that dispatches to p4lang/packages"
         required: false
 
@@ -82,8 +82,8 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.PACKAGES_APP_ID }}
-          private-key: ${{ secrets.PACKAGES_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
           owner: p4lang
           repositories: packages
 
